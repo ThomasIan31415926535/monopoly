@@ -28,3 +28,6 @@ if winners:
 else:
     print("No winners, the game ended without any remaining players.")
 
+    # Print the final player status
+for player in game.players:
+    print(f"{player.name} has HKD {player.money}.")
