@@ -1,7 +1,10 @@
 from model import Player, Game
 
 if __name__ == "__main__":
-    print("Please type the number of players: ")
+    num_of_player = input("Please type the number of players:(2-6) ")
+    while (num_of_player<2 | num_of_player>6):
+        print("Error!\n")
+        num_of_player = input("Please type the number of players:(2-6) ")
     player_names = ["Alice", "Bob", "Charlie"]
     players = [Player(name) for name in player_names]
     game = Game(players)
