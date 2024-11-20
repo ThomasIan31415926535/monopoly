@@ -10,3 +10,4 @@ class Player:
         self.position = (self.position + spaces) % 20
         if self.position == 0:
             self.money += 1500  # Salary for passing Go
+            print(f"{self.name} passed Go and received HKD 1500.")
