@@ -87,6 +87,13 @@ class Game:
         self.current_player_index = (self.current_player_index + 1) % len(self.players)
         self.rounds += 1
 
+    def clear_ownership(self, player):
+        """Clears the ownership of properties owned by the bankrupt player."""
+        for property in self.properties:
+            if isinstance(property, Property) and property.owner == player:
+                property.owner = None  # Clear ownership
+                print(f"{property.name} is now unowned.")
+
     def handle_square_action(self, player):
         
         if player.position < 0 or player.position >= len(self.properties):
