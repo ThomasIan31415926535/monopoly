@@ -72,7 +72,8 @@ class Game:
                     return
 
         # If not in jail, roll the dice
-        roll = sum(random.randint(1, 4) for _ in range(2))  # Roll 2 tetrahedral dice
+        roll1, roll2 = random.randint(1, 4), random.randint(1, 4)
+        roll = roll1+roll2  # Roll 2 tetrahedral dice
         start_position = player.position
         player.move(roll)
         current_position = player.position
