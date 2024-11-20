@@ -191,6 +191,8 @@ class Game:
         player.position = 6  # Move to Jail (6th square)
         player.in_jail = True  # Set the player as in jail
         player.jail_turns = 0  # Reset jail turn counter
+        print(f"{player.name} is in jail. Turn {player.jail_turns + 1}.")
+
 
     def handle_chance(self, player):
         # Chance logic: gain or lose a random amount

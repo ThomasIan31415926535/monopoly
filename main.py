@@ -1,21 +1,20 @@
 from model.player import Player
 from model.game import Game
 from model.property import Property
-from model._init_ import _init_
 
 if __name__ == "__main__":
-    num_of_player = input("Please type the number of players:(2-6) ")
+    num_of_player = int(input("Please type the number of players:(2-6) "))
     while (num_of_player<2 or num_of_player>6):
         print("Please enter a valid number of players.(2-6)")
-        num_of_player = input("Please type the number of players:(2-6) ")
+        num_of_player = int(input("Please type the number of players:(2-6) "))
     player_name = ["Player 1","Player 2","Player 3","Player 4","Player 5","Player 6"]
     player_names = []
     if input("Do you want to name your players?(y/n) ") == "y":
         for x in range(num_of_player):
-            player_names[x] = input("Please type the name of player "+str(x+1)+": ")
+            player_names.append(input("Please type the name of player "+str(x+1)+": "))
     else:
         for x in range(num_of_player):
-            player_names[x] = player_name[x]
+            player_names.append(player_name[x])
     players = [Player(name) for name in player_names]
     game = Game(players)
 
