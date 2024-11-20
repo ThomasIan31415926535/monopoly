@@ -1,6 +1,7 @@
 from model import Player, Game
 
 if __name__ == "__main__":
+    print("Please type the number of players: ")
     player_names = ["Alice", "Bob", "Charlie"]
     players = [Player(name) for name in player_names]
     game = Game(players)
