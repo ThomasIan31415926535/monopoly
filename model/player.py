@@ -11,3 +11,13 @@ class Player:
         if self.position == 0:
             self.money += 1500  # Salary for passing Go
             print(f"{self.name} passed Go and received HKD 1500.")
+
+    def status(self):
+        """Returns the status of the player."""
+        return {
+            "name": self.name,
+            "money": self.money,
+            "position": self.position,
+            "in_jail": self.in_jail,
+            "jail_turns": self.jail_turns
+        }
