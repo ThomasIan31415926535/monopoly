@@ -155,7 +155,7 @@ class Game:
 
     def handle_chance(self, player):
         # Chance logic: gain or lose a random amount
-        amount = random.randint(1, 20) * 10  # Random amount between 10 and 200
+        amount = random.randint(-30, 20) * 10  # Random amount between 10 and 200
         if random.choice([True, False]):  # Randomly decide to gain or lose
             player.money += amount
             print(f"{player.name} gained HKD {amount} from Chance! Current money: HKD {player.money}.")
