@@ -187,6 +187,11 @@ class Game:
         }
 
 
+    def handle_Go_to_Jail(self, player):
+        player.position = 6  # Move to Jail (6th square)
+        player.in_jail = True  # Set the player as in jail
+        player.jail_turns = 0  # Reset jail turn counter
+
     def handle_chance(self, player):
         # Chance logic: gain or lose a random amount
         amount = random.randint(-30, 20) * 10  # Random amount between 10 and 200
