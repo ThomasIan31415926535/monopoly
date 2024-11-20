@@ -5,7 +5,7 @@ from model._init_ import _init_
 
 if __name__ == "__main__":
     num_of_player = input("Please type the number of players:(2-6) ")
-    while (num_of_player<2 | num_of_player>6):
+    while (num_of_player<2 or num_of_player>6):
         print("Error!\n")
         num_of_player = input("Please type the number of players:(2-6) ")
     player_name = ["Player 1","Player 2","Player 3","Player 4","Player 5","Player 6"]
