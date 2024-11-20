@@ -151,6 +151,33 @@ class Game:
                 'current_player_index': self.current_player_index,
                 'rounds': self.rounds
             }, f)
+    
+    def load_game(self, filename):
+        """Loads the game state from a file."""
+        with open(filename, 'r') as f:
+            data = json.load(f)
+            self.players = [Player(p['name']) for p in data['players']]
+            for p, d in zip(self.players, data['players']):
+                p.money = d['money']
+                p.position = d['position']
+                p.in_jail = d['in_jail']
+            self.current_player_index = data['current_player_index']
+            self.rounds = data['rounds']
+
+    def get_player_status(self, player_name):
+        """Returns the status of a specific player."""
+        for player in self.players:
+            if player.name == player_name:
+                return player.status()
+        return None
+    
+    def get_game_status(self):
+        """Returns the status of the game."""
+        return {
+            'rounds': self.rounds,
+            'current_player': self.next_player().name,
+            'players': [player.status() for player in self.players]
+        }
 
 
     def handle_chance(self, player):
@@ -168,17 +195,6 @@ class Game:
         player.money -= tax_amount
         print(f"{player.name} pays HKD {tax_amount} in income tax. Remaining money: HKD {player.money}.")
 
-    
-    def load_game(self, filename):
-        with open(filename, 'r') as f:
-            data = json.load(f)
-            self.players = [Player(p['name']) for p in data['players']]
-            for p, d in zip(self.players, data['players']):
-                p.money = d['money']
-                p.position = d['position']
-                p.in_jail = d['in_jail']
-            self.current_player_index = data['current_player_index']
-            self.rounds = data['rounds']
 
     def check_game_over(self):
         # Check for players with money left
