@@ -5,7 +5,10 @@ if __name__ == "__main__":
     while (num_of_player<2 | num_of_player>6):
         print("Error!\n")
         num_of_player = input("Please type the number of players:(2-6) ")
-    player_names = ["Alice", "Bob", "Charlie"]
+    player_name = ["Player 1","Player 2","Player 3","Player 4","Player 5","Player 6"]
+    player_names = []
+    for x in range(num_of_player):
+        player_names[x] = player_name[x]
     players = [Player(name) for name in player_names]
     game = Game(players)
 
