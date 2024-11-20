@@ -1,4 +1,7 @@
-from model import Player, Game
+from model.player import Player
+from model.game import Game
+from model.property import Property
+from model._init_ import _init_
 
 if __name__ == "__main__":
     num_of_player = input("Please type the number of players:(2-6) ")
