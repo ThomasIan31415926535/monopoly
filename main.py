@@ -10,8 +10,12 @@ if __name__ == "__main__":
         num_of_player = input("Please type the number of players:(2-6) ")
     player_name = ["Player 1","Player 2","Player 3","Player 4","Player 5","Player 6"]
     player_names = []
-    for x in range(num_of_player):
-        player_names[x] = player_name[x]
+    if input("Do you want to name your players?(y/n) ") == "y":
+        for x in range(num_of_player):
+            player_names[x] = input("Please type the name of player "+str(x+1)+": ")
+    else:
+        for x in range(num_of_player):
+            player_names[x] = player_name[x]
     players = [Player(name) for name in player_names]
     game = Game(players)
 
