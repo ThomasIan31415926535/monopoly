@@ -7,10 +7,10 @@ class Player:
         self.jail_turns = 0
 
     def move(self, spaces):
-        self.position = (self.position + spaces) % 20
-        if self.position == 0:
+        if self.position > 19:
             self.money += 1500  # Salary for passing Go
-            print(f"{self.name} passed Go and received HKD 1500.")
+            print(f"{self.name} passed GO and collected HKD 1500.")
+        self.position = (self.position + spaces) % 20
 
     def status(self):
         """Returns the status of the player."""

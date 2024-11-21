@@ -38,55 +38,73 @@ class Game:
         return self.players[self.current_player_index]
 
     def play_turn(self):
-        player = self.next_player()
-        if player.in_jail:
-           if player.jail_turns < 3:
-              print(f"{player.name} is in jail. Turn {player.jail_turns + 1}.")
-              if player.jail_turns >= 1:
+        choice = input("1. Roll Dice\n2. See Player Status\n3. See All Players Status\n4. See Game Status\nEnter your choice: ")
+        if choice == "1":
+            player = self.next_player()
+            if player.in_jail:
+                self.handle_jail(player)
+                return
+
+            # If not in jail, roll the dice
+            roll1, roll2 = random.randint(1, 4), random.randint(1, 4)
+            roll = roll1+roll2  # Roll 2 tetrahedral dice
+            start_position = player.position
+            player.move(roll)
+            current_position = player.position
+            # Move the player
+            print(f"{player.name} rolls {roll1} + {roll2} = {roll} and moves from {start_position}th Square to {current_position}th Square ")
+            self.handle_square_action(player)
+
+            if player.money < 0:
+                print(f"{player.name} is bankrupt and out of the game.")
+                self.players.remove(player)
+
+            self.current_player_index = (self.current_player_index + 1) % len(self.players)
+            self.rounds += 1
+
+        elif choice == "2":
+            self.get_player_status()
+        elif choice == "3":
+            self.get_all_players_status()
+        elif choice == "4":
+            self.get_game_status()
+        else:
+            print("Invalid choice. Please try again.")
+            self.play_turn()
+
+    def handle_jail_turn(self, player):
+        """Handles the player's turn if they are in jail."""
+        if player.jail_turns < 3:
+            print(f"{player.name} is in jail. Turn {player.jail_turns + 1}.")
+            if player.jail_turns >= 1:
                 decision = input("Type 'pay' to pay the fine or 'roll' to roll the dice: ").strip().lower()
                 if decision == 'pay':
                     if player.money >= 150:
-                       player.money -= 150
-                       player.in_jail = False
-                       print(f"{player.name} paid HKD 150 to get out of jail.")
+                        player.money -= 150
+                        player.in_jail = False
+                        print(f"{player.name} paid HKD 150 to get out of jail.")
                     else:
-                       print(f"{player.name} does not have enough money to pay the fine.")
-                    return
+                        print(f"{player.name} does not have enough money to pay the fine.")
                 else:
-                     roll1, roll2 = random.randint(1, 4), random.randint(1, 4)
-                     roll = roll1 + roll2
-                     if roll1 == roll2:
-                      player.in_jail = False
-                      player.position = (player.position + roll) % len(self.properties)
-                      print(f"{player.name} rolled doubles! They move to {player.position}.")
-                     else:
-                      player.jail_turns += 1
-                if player.jail_turns == 3:
-                    print(f"{player.name} did not roll doubles in three turns and pays HKD 150 to get out of jail.")
-                    player.money -= 150
-                    player.in_jail = False
-                    player.position = (player.position + roll) % len(self.properties)
-                    print(f"{player.name} moves to {player.position}.")
-                else:
-                    print(f"{player.name} did not roll doubles. They remain in jail for another turn.")
-                    return
-
-        # If not in jail, roll the dice
+                    self.roll_dice_for_jail(player)
+            else:
+                player.jail_turns += 1
+        else:
+            print(f"{player.name} did not roll doubles in three turns and pays HKD 150 to get out of jail.")
+            player.money -= 150
+            player.in_jail = False
+        
+    def roll_dice_for_jail(self, player):
+        """Rolls the dice for a player in jail."""
         roll1, roll2 = random.randint(1, 4), random.randint(1, 4)
-        roll = roll1+roll2  # Roll 2 tetrahedral dice
-        start_position = player.position
-        player.move(roll)
-        current_position = player.position
-        # Move the player
-        print(f"{player.name} rolls {roll1} + {roll2} = {roll} and moves from {start_position}th Square to {current_position}th Square ")
-        self.handle_square_action(player)
-
-        if player.money < 0:
-            print(f"{player.name} is bankrupt and out of the game.")
-            self.players.remove(player)
-
-        self.current_player_index = (self.current_player_index + 1) % len(self.players)
-        self.rounds += 1
+        roll = roll1 + roll2
+        if roll1 == roll2:
+            player.in_jail = False
+            player.position = (player.position + roll) % len(self.properties)
+            print(f"{player.name} rolled doubles! They move to {player.position}.")
+        else:
+            player.jail_turns += 1
+            print(f"{player.name} did not roll doubles. They remain in jail for another turn.")
 
     def clear_ownership(self, player):
         """Clears the ownership of properties owned by the bankrupt player."""
@@ -97,7 +115,7 @@ class Game:
 
     def handle_square_action(self, player):
         
-        if player.position < 0 or player.position >= len(self.properties):
+        if player.position < 0 or player.position >19:
            print(f"Resetting to GO e.g 0th square.")
            player.position = 0  # Reset to a valid position or handle as needed
 
@@ -131,26 +149,28 @@ class Game:
 
 
         if isinstance(square, Property):
-            if square.owner is None:
-                print(f"{player.name} landed on {square.name}. Do you want to buy it for HKD {square.price}?")
-                 # Input handling for the player's decision
-                decision = input().strip().lower()
-                if decision == 'yes':
-                    if player.money >= square.price:
-                       player.money -= square.price  # Deduct the price from the player's money
-                       square.owner = player  # Set the player as the owner of the square
-                       print(f"{player.name} bought {square.name} for HKD {square.price}. Remaining money: HKD {player.money}.")
-                    else:
-                       print(f"{player.name} does not have enough money to buy {square.name}.")
-                elif decision == 'no':
-                    print(f"{player.name} decided not to buy {square.name}.")
+            self.handle_property_action(player, square)
+
+    def handle_property_action(self, player, square):
+        """Handles the action when a player lands on a property."""
+        if square.owner is None:
+            print(f"{player.name} landed on {square.name}. Do you want to buy it for HKD {square.price}? (Remaining: HKD {player.money})")
+            decision = input().strip().lower()
+            if decision == 'yes':
+                if player.money >= square.price:
+                    player.money -= square.price  # Deduct the price from the player's money
+                    square.owner = player  # Set the player as the owner of the square
+                    print(f"{player.name} bought {square.name} for HKD {square.price}. Remaining money: HKD {player.money}.")
                 else:
-                    print("Invalid input. Please enter 'yes' or 'no'.")
-            
+                    print(f"{player.name} does not have enough money to buy {square.name}.")
+            elif decision == 'no':
+                print(f"{player.name} decided not to buy {square.name}.")
             else:
-                player.money -= square.rent
-                print(f"{player.name} landed on {square.name}, which is owned by {square.owner.name}. Pay rent of HKD {square.rent}.Remaining money: {player.money} HKD")
-                
+                print("Invalid input. Please enter 'yes' or 'no'.")
+        else:
+            player.money -= square.rent
+            print(f"{player.name} landed on {square.name}, which is owned by {square.owner.name}. Pay rent of HKD {square.rent}. Remaining money: HKD {player.money}.")
+
     def save_game(self, filename):
         with open(filename, 'w') as f:
             json.dump({
@@ -172,12 +192,26 @@ class Game:
             self.current_player_index = data['current_player_index']
             self.rounds = data['rounds']
 
+    def handle_chance(self, player):
+        # Chance logic: gain or lose a random amount
+        amount = random.randint(-30, 20) * 10  # Random amount between 10 and 200
+        if amount > 0:
+            player.money += amount
+            print(f"{player.name} gained HKD {amount} from Chance! Current money: HKD {player.money}.")
+        else:
+            player.money += amount
+            print(f"{player.name} lost HKD {abs(amount)} from Chance! Current money: HKD {player.money}.")
+
     def get_player_status(self, player_name):
         """Returns the status of a specific player."""
         for player in self.players:
             if player.name == player_name:
                 return player.status()
         return None
+    
+    def get_all_players_status(self):
+        """Returns the status of all players."""
+        return [player.status() for player in self.players]
     
     def get_game_status(self):
         """Returns the status of the game."""
@@ -195,18 +229,8 @@ class Game:
         print(f"{player.name} is in jail. Turn {player.jail_turns + 1}.")
 
 
-    def handle_chance(self, player):
-        # Chance logic: gain or lose a random amount
-        amount = random.randint(-30, 20) * 10  # Random amount between 10 and 200
-        if random.choice([True, False]):  # Randomly decide to gain or lose
-            player.money += amount
-            print(f"{player.name} gained HKD {amount} from Chance! Current money: HKD {player.money}.")
-        else:
-            player.money -= amount
-            print(f"{player.name} lost HKD {amount} from Chance! Current money: HKD {player.money}.")
-
     def handle_income_tax(self, player):
-        tax_amount = (player.money // 10) * 10  # Round down to nearest multiple of 10
+        tax_amount = (player.money // 100) * 10  # Round down to nearest multiple of 10
         player.money -= tax_amount
         print(f"{player.name} pays HKD {tax_amount} in income tax. Remaining money: HKD {player.money}.")
 
