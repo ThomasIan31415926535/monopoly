@@ -54,6 +54,9 @@ class Game:
                 player.move(roll)
                 current_position = player.position
                 # Move the player
+                if start_position>current_position:
+                    player.money+=1500
+                    print(f"{player.name} passed GO and collected HKD 1500.")
                 print(f"{player.name} rolls {roll1} + {roll2} = {roll} and moves from {start_position}th Square to {current_position}th Square ")
                 self.handle_square_action(player)
 
