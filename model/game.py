@@ -158,19 +158,22 @@ class Game:
     def handle_property_action(self, player, square):
         """Handles the action when a player lands on a property."""
         if square.owner is None:
-            print(f"{player.name} landed on {square.name}. Do you want to buy it for HKD {square.price}? (Remaining: HKD {player.money})")
+            print(f"{player.name} landed on {square.name}. Do you want to buy it for HKD {square.price}?(yes/no) (Remaining: HKD {player.money})")
             decision = input().strip().lower()
-            if decision == 'yes':
-                if player.money >= square.price:
-                    player.money -= square.price  # Deduct the price from the player's money
-                    square.owner = player  # Set the player as the owner of the square
-                    print(f"{player.name} bought {square.name} for HKD {square.price}. Remaining money: HKD {player.money}.")
+            while decision not in ['yes', 'no']:
+                if decision == 'yes':
+                    if player.money >= square.price:
+                        player.money -= square.price  # Deduct the price from the player's money
+                        square.owner = player  # Set the player as the owner of the square
+                        print(f"{player.name} bought {square.name} for HKD {square.price}. Remaining money: HKD {player.money}.")
+                    else:
+                        print(f"{player.name} does not have enough money to buy {square.name}.")
+                elif decision == 'no':
+                    print(f"{player.name} decided not to buy {square.name}.")
                 else:
-                    print(f"{player.name} does not have enough money to buy {square.name}.")
-            elif decision == 'no':
-                print(f"{player.name} decided not to buy {square.name}.")
-            else:
-                print("Invalid input. Please enter 'yes' or 'no'.")
+                    print("Invalid input. Please enter 'yes' or 'no'.")
+                    print(f"{player.name} landed on {square.name}. Do you want to buy it for HKD {square.price}?(yes/no) (Remaining: HKD {player.money})")
+                    decision = input().strip().lower()
         else:
             player.money -= square.rent
             print(f"{player.name} landed on {square.name}, which is owned by {square.owner.name}. Pay rent of HKD {square.rent}. Remaining money: HKD {player.money}.")
