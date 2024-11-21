@@ -38,39 +38,40 @@ class Game:
         return self.players[self.current_player_index]
 
     def play_turn(self):
-        choice = input("1. Roll Dice\n2. See Player Status\n3. See All Players Status\n4. See Game Status\nEnter your choice: ")
-        if choice == "1":
-            player = self.next_player()
-            if player.in_jail:
-                self.handle_jail(player)
-                return
+        choice = "5"
+        while choice not in ["1", "2", "3", "4"]:
+            choice = input("1. Next Player Roll Dice\n2. See Player Status\n3. See All Players Status\n4. See Game Status\nEnter your choice: ")
+            if choice == "1":
+                player = self.next_player()
+                if player.in_jail:
+                    self.handle_jail(player)
+                    return
 
-            # If not in jail, roll the dice
-            roll1, roll2 = random.randint(1, 4), random.randint(1, 4)
-            roll = roll1+roll2  # Roll 2 tetrahedral dice
-            start_position = player.position
-            player.move(roll)
-            current_position = player.position
-            # Move the player
-            print(f"{player.name} rolls {roll1} + {roll2} = {roll} and moves from {start_position}th Square to {current_position}th Square ")
-            self.handle_square_action(player)
+                # If not in jail, roll the dice
+                roll1, roll2 = random.randint(1, 4), random.randint(1, 4)
+                roll = roll1+roll2  # Roll 2 tetrahedral dice
+                start_position = player.position
+                player.move(roll)
+                current_position = player.position
+                # Move the player
+                print(f"{player.name} rolls {roll1} + {roll2} = {roll} and moves from {start_position}th Square to {current_position}th Square ")
+                self.handle_square_action(player)
 
-            if player.money < 0:
-                print(f"{player.name} is bankrupt and out of the game.")
-                self.players.remove(player)
+                if player.money < 0:
+                    print(f"{player.name} is bankrupt and out of the game.")
+                    self.players.remove(player)
 
-            self.current_player_index = (self.current_player_index + 1) % len(self.players)
-            self.rounds += 1
+                self.current_player_index = (self.current_player_index + 1) % len(self.players)
+                self.rounds += 1
 
-        elif choice == "2":
-            self.get_player_status()
-        elif choice == "3":
-            self.get_all_players_status()
-        elif choice == "4":
-            self.get_game_status()
-        else:
-            print("Invalid choice. Please try again.")
-            self.play_turn()
+            elif choice == "2":
+                self.get_player_status()
+            elif choice == "3":
+                self.get_all_players_status()
+            elif choice == "4":
+                self.get_game_status()
+            else:
+                print("Invalid choice. Please try again.")
 
     def handle_jail_turn(self, player):
         """Handles the player's turn if they are in jail."""
