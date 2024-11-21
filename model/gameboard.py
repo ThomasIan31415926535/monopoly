@@ -42,7 +42,7 @@ class Gameboard:
         """Prints the gameboard."""
         for i, property in enumerate(self.properties):
             if property:
-                print(f"Square {i}: {property.name} (Price: {property.price}, Rent: {property.rent})")
+                print(f"Square {i}: {property.name} (Price: {property.price}, Rent: {property.rent}, Owner: {property.owner})")
             else:
                 print(f"Square {i}: Empty")
 

@@ -73,6 +73,7 @@ class Game:
                 self.get_all_players_status()
             elif choice == "4":
                 self.get_game_status()
+                self.properties.print_gameboard()
             else:
                 print("Invalid choice. Please try again.")
 
@@ -116,6 +117,7 @@ class Game:
             if isinstance(property, Property) and property.owner == player:
                 property.owner = None  # Clear ownership
                 print(f"{property.name} is now unowned.")
+        player.owned_properties = []  # Clear all owned properties
 
     def handle_square_action(self, player):
         

@@ -16,5 +16,6 @@ class Player:
             "money": self.money,
             "position": self.position,
             "in_jail": self.in_jail,
-            "jail_turns": self.jail_turns
+            "jail_turns": self.jail_turns,
+            "Owned Properties": self.owned_properties
         }

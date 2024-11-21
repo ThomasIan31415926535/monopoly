@@ -1,6 +1,7 @@
 from model.player import Player
 from model.game import Game
 from model.property import Property
+from model.gameboard import Gameboard
 
 def main():
     newgame = input("1. Start a new game?\n2. Load a saved game?\n")
@@ -11,7 +12,10 @@ def main():
             num_of_player = int(input("Please type the number of players:(2-6) "))
         player_name = ["Player 1","Player 2","Player 3","Player 4","Player 5","Player 6"]
         player_names = []
-        if input("Do you want to name your players?(y/n) ") == "y":
+        naming = input("Do you want to name your players?(y/n) ")
+        while naming != "y" and naming != "n":
+            naming = input("Please type 'y' or 'n': ")
+        if naming == "y":
             for x in range(num_of_player):
                 player_names.append(input("Please type the name of player "+str(x+1)+": "))
         else:
@@ -26,11 +30,21 @@ def main():
         print("Please type 1 or 2.")
         main()
 
+    
+    GB = input("1. Use the default gameboard?\n2. Load a saved gameboard?\n")
+    while (GB != "1" and GB != "2"):
+        print("Please type 1 or 2.")
+        GB = input("1. Use the default gameboard?\n2. Load a saved gameboard?\n")
+    if GB == "1":
+        gameboard = Gameboard()
+    else:
+        game.load_gameboard(input("Please type the name of the saved gameboard: "))
+
     # Game loop (simplified)
     while not game.check_game_over():
         game.play_turn()
 
-        # Print the winner
+    # Print the winner
     winners = game.determine_winner()
     if winners:
         winner_names = ", ".join(winner.name for winner in winners)
