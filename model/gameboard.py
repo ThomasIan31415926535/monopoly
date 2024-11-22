@@ -48,7 +48,7 @@ class Gameboard:
 
     def save_gameboard(self, filename):
         """Saves the gameboard to a file."""
-        with open(filename, 'w') as f:
+        with open("GB_"+filename, 'w') as f:
             json.dump([{'name': p.name, 'price': p.price, 'rent': p.rent} if p else None for p in self.properties], f)
 
     def load_gameboard(self, filename):

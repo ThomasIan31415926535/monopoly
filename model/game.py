@@ -194,7 +194,7 @@ class Game:
             print(f"{player.name} landed on {square.name}, which is owned by {square.owner.name}. Pay rent of HKD {square.rent}. Remaining money: HKD {player.money}.")
 
     def save_game(self, filename):
-        with open(filename, 'w') as f:
+        with open("SG_"+filename, 'w') as f:
             json.dump({
                 'players': [{'name': p.name, 'money': p.money, 'position': p.position, 'in_jail': p.in_jail}
                             for p in self.players],
