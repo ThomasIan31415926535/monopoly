@@ -38,9 +38,9 @@ class Game:
         return self.players[self.current_player_index]
 
     def play_turn(self):
-        choice = "6"
-        while choice not in ["1", "2", "3", "4","5"]:
-            choice = input("1. Next Player Roll Dice\n2. See Player Status\n3. See All Players Status\n4. See Game Status\n5. Save Game\nEnter your choice: ")
+        choice = "9999"
+        while choice not in ["1", "2", "3", "4","5","6"]:
+            choice = input("1. Next Player Roll Dice\n2. See Player Status\n3. See All Players Status\n4. See Game Status\n5. Save Game\n6. Query next player\nEnter your choice: ")
             if choice == "1":
                 player = self.next_player()
                 if player.in_jail:
@@ -77,6 +77,8 @@ class Game:
             elif choice == "5":
                 self.save_game(input("Please type the name of the saved game: "))
                 print("Game saved successfully.")
+            elif choice == "6":
+                print(f"The next player is {self.players[(self.current_player_index+1)%len(self.players)].name}.")
             else:
                 print("Invalid choice. Please try again.")
 
@@ -238,7 +240,8 @@ class Game:
         return {
             'rounds': self.rounds,
             'current_player': self.next_player().name,
-            'players': [player.status() for player in self.players]
+            'players': [player.status() for player in self.players],
+            'location': [player.position for player in self.players]
         }
 
 
