@@ -1,9 +1,25 @@
 import json
-from .property import Property
+
+
+class Property:
+    def __init__(self, gameboard):
+        self.name = gameboard.name
+        self.price = gameboard.price
+        self.rent = gameboard.rent
+        self.owner = None
+    
+    def print_all_properties(self):
+        print(f"Name: {self.name}")
+        print(f"Price: {self.price}")
+        print(f"Rent: {self.rent}")
+        print(f"Owner: {self.owner}")
+        print("--------------------")
 
 class Gameboard:
     def __init__(self):
         self.properties = []
+
+    
 
     def create_gameboard(self):
         """Creates a new gameboard with properties."""
@@ -40,7 +56,9 @@ class Gameboard:
                     new_name = input("Enter the new name: ")
                     new_price = input("Enter the new price: ")
                     new_rent = input("Enter the new rent: ")
-                    self.properties[i] = Property(new_name, new_price, new_rent)
+                    property.name = new_name
+                    property.price = int(new_price)
+                    property.rent = int(new_rent)
             else:
                 print(f"Square {i}: Empty")
                 add = input("Do you want to add a property to this square? (y/n) ")
