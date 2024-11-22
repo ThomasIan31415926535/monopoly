@@ -1,6 +1,7 @@
 import random
 from .property import Property
 from .player import Player
+from .gameboard import Gameboard
 import json
 
 class Game:
@@ -39,7 +40,7 @@ class Game:
 
     def play_turn(self):
         choice = "5"
-        while choice not in ["1", "2", "3", "4"]:
+        while choice not in ["1", "2", "3", "4","5"]:
             choice = input("1. Next Player Roll Dice\n2. See Player Status\n3. See All Players Status\n4. See Game Status\nEnter your choice: ")
             if choice == "1":
                 player = self.next_player()
@@ -74,6 +75,9 @@ class Game:
             elif choice == "4":
                 self.get_game_status()
                 self.print_gameboard()
+            elif choice == "5":
+                self.save_game(input("Please type the name of the saved game: "))
+                print("Game saved successfully.")
             else:
                 print("Invalid choice. Please try again.")
 

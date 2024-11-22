@@ -26,19 +26,35 @@ def main():
     elif newgame == "2":
         game = Game([])
         game.load_game(input("Please type the name of the saved game: "))
+        print("Game loaded successfully.")
     else:
         print("Please type 1 or 2.")
         main()
 
     
-    GB = input("1. Use the default gameboard?\n2. Load a saved gameboard?\n")
+    GB = input("1. Use the default gameboard?\n2. Load a saved gameboard?\n3. Create a new gameboard?\n")
     while (GB != "1" and GB != "2"):
         print("Please type 1 or 2.")
         GB = input("1. Use the default gameboard?\n2. Load a saved gameboard?\n")
     if GB == "1":
         gameboard = Gameboard()
-    else:
-        game.load_gameboard(input("Please type the name of the saved gameboard: "))
+    elif GB == "2":
+        game.load_gameboard(gameboard = input("Please type the name of the saved gameboard: "))
+        print("Gameboard loaded successfully.")
+    elif GB == "3":
+        while True:
+            gameboard.print_gameboard()
+            choice = input("1.Add a property\n2.Remove a property\n3.print the gameboard\n4.Exit\n")
+            if choice == "1":
+                gameboard.add_property()
+            elif choice == "2":
+                gameboard.remove_property()
+            elif choice == "3":
+                gameboard.print_gameboard()
+            elif choice == "4":
+                return
+            else:
+                print("Please type 1, 2, 3 or 4.")
 
     # Game loop (simplified)
     while not game.check_game_over():
