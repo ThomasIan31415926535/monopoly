@@ -33,15 +33,23 @@ def main():
 
     print("Loading gameboard...")
 
-    GB = input("1. Use the default gameboard?\n2. Load a saved gameboard?\n")   
-    while (GB != "1" and GB != "2"):
-        print("Please type 1 or 2.")
-        GB = input("1. Use the default gameboard?\n2. Load a saved gameboard?\n")
-        if GB == "1":
-            gameboard = Gameboard()
-            gameboard.create_gameboard()
-        elif GB == "2":
-            game.load_gameboard(input("Please type the name of the saved gameboard: "))
+
+    GB = input("1. Use the default gameboard?\n2. Load a saved gameboard?\n3. Create a new gameboard?\n4. Edit the gameboard?\n")
+    while (GB != "1" and GB != "2" and GB != "3" and GB != "4"):
+        print("Please type 1, 2, 3, or 4.")
+        GB = input("1. Use the default gameboard?\n2. Load a saved gameboard?\n3. Create a new gameboard?\n4. Edit the gameboard?\n")
+    if GB == "1":
+        gameboard = Gameboard()
+        gameboard.create_gameboard()
+    elif GB == "2":
+        game.load_gameboard(input("Please type the name of the saved gameboard: "))
+    elif GB == "3":
+        gameboard = Gameboard()
+        gameboard.create_game()
+    elif GB == "4":
+        gameboard = Gameboard()
+        gameboard.load_gameboard(input("Please type the name of the gameboard to edit: "))
+        gameboard.edit_gameboard()
         
     print("Gameboard loaded successfully.")
 

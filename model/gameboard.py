@@ -30,6 +30,26 @@ class Gameboard:
             Property("Tai O", 600, 25)
         ]
 
+    def edit_gameboard(self):
+        """Allows the user to modify the gameboard properties."""
+        for i, property in enumerate(self.properties):
+            if property:
+                print(f"Square {i}: {property.name} (Price: {property.price}, Rent: {property.rent}, Owner: {property.owner})")
+                modify = input("Do you want to modify this property? (y/n) ")
+                if modify == "y":
+                    new_name = input("Enter the new name: ")
+                    new_price = input("Enter the new price: ")
+                    new_rent = input("Enter the new rent: ")
+                    self.properties[i] = Property(new_name, new_price, new_rent)
+            else:
+                print(f"Square {i}: Empty")
+                add = input("Do you want to add a property to this square? (y/n) ")
+                if add == "y":
+                    new_name = input("Enter the new name: ")
+                    new_price = input("Enter the new price: ")
+                    new_rent = input("Enter the new rent: ")
+                    self.properties[i] = Property(new_name, new_price, new_rent)
+
     def add_property(self, name, price, rent):
         """Adds a new property to the gameboard."""
         self.properties.append(Property(name, price, rent))

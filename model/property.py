@@ -1,9 +1,11 @@
 # model/property.py
+from .gameboard import Gameboard
+
 class Property:
-    def __init__(self, name, price, rent):
-        self.name = name
-        self.price = price
-        self.rent = rent
+    def __init__(self, gameboard):
+        self.name = gameboard.name
+        self.price = gameboard.price
+        self.rent = gameboard.rent
         self.owner = None
         self.ownedproperties = []
     
