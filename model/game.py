@@ -44,7 +44,7 @@ class Game:
             if choice == "1":
                 player = self.next_player()
                 if player.in_jail:
-                    self.handle_jail(player)
+                    self.handle_jail_turn(player)
                     return
 
                 # If not in jail, roll the dice
