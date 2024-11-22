@@ -107,6 +107,7 @@ class Game:
             player.in_jail = False
             player.position = (player.position + roll) % len(self.properties)
             print(f"{player.name} rolled doubles! They move to {player.position}.")
+            self.handle_square_action(player)
         else:
             player.jail_turns += 1
             print(f"{player.name} did not roll doubles. They remain in jail for another turn.")
