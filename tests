@@ -4,4 +4,58 @@ from player import Player
 from property import Property
 
 class TestMonopolyGame(unittest.Testcase):
-   
+   import unittest
+from game import Game
+from player import Player
+from property import Property
+
+class TestMonopolyGame(unittest.TestCase):
+
+    def setUp(self):
+        """Set up a new game and players for testing."""
+        self.game = Game()
+        self.player1 = Player("Player 1")
+        self.player2 = Player("Player 2")
+        self.property = Property(name="Sai Kung", price=400)
+
+
+    def test_property_purchase(self):
+        """Test that a player can purchase a property."""
+        self.game.add_property(self.property)
+        self.game.add_player(self.player)
+
+        # Player buys the property
+        result = self.player.purchase_property(self.property)
+        
+        self.assertTrue(result, "Player should be able to purchase the property.")
+        self.assertEqual(self.player.balance, 1100, "Player balance should be updated after purchase.")
+        self.assertEqual(self.property.owner, self.player, "Property owner should be updated.")
+
+    def test_dice_roll(self):
+        """Test the dice rolling functionality."""
+        roll = self.game.roll_dice()
+        self.assertGreaterEqual(roll, 2, "Dice roll should be at least 2.")
+        self.assertLessEqual(roll, 12, "Dice roll should be at most 12.")
+
+    def test_player_move(self):
+        """Test that a player moves correctly based on the dice roll."""
+        self.game.add_player(self.player)
+        initial_position = self.player.position
+        dice_roll = 5
+        
+        # Move the player
+        self.player.move(dice_roll)
+        
+        self.assertEqual(self.player.position, (initial_position + dice_roll) % 20, "Player position should be updated after moving.")
+
+    def test_property_rent_calculation(self):
+        """Test the rent calculation for owned properties."""
+        self.game.add_property(self.property)
+        self.player.purchase_property(self.property)
+
+        # Assuming rent is calculated as 50 for this example
+        rent = self.property.calculate_rent()
+        self.assertEqual(rent, 50, "Rent should be calculated correctly for properties.")
+
+if __name__ == '__main__':
+    unittest.main()
