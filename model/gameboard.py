@@ -56,3 +56,8 @@ class Gameboard:
         with open(filename, 'r') as f:
             data = json.load(f)
             self.properties = [Property(d['name'], d['price'], d['rent']) if d else None for d in data]
+
+    def create_game(self):
+        """Creates a new game."""
+        self.create_gameboard()
+        self.load_gameboard('gameboard.json')
