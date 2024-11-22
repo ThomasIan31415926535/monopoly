@@ -68,14 +68,22 @@ class Game:
                 self.rounds += 1
 
             elif choice == "2":
-                self.get_player_status()
+                print(self.get_player_status(self.players[self.current_player_index].name))
             elif choice == "3":
                 self.get_all_players_status()
             elif choice == "4":
                 self.get_game_status()
-                self.properties.print_gameboard()
+                self.print_gameboard()
             else:
                 print("Invalid choice. Please try again.")
+
+    def print_gameboard(self):
+        """Prints the gameboard."""
+        for i, property in enumerate(self.properties):
+            if property:
+                print(f"Square {i}: {property.name} (Price: {property.price}, Rent: {property.rent}, Owner: {property.owner})")
+            else:
+                print(f"Square {i}: Empty")
 
     def handle_jail_turn(self, player):
         """Handles the player's turn if they are in jail."""
@@ -98,7 +106,7 @@ class Game:
             print(f"{player.name} did not roll doubles in three turns and pays HKD 150 to get out of jail.")
             player.money -= 150
             player.in_jail = False
-        
+
     def roll_dice_for_jail(self, player):
         """Rolls the dice for a player in jail."""
         roll1, roll2 = random.randint(1, 4), random.randint(1, 4)
@@ -219,8 +227,8 @@ class Game:
         return None
     
     def get_all_players_status(self):
-        """Returns the status of all players."""
-        return [player.status() for player in self.players]
+        for player in self.players:
+            print(player.status())
     
     def get_game_status(self):
         """Returns the status of the game."""
